@@ -23,9 +23,6 @@ import javax.inject.Inject;
 )
 public class RangedGuildMinigamePlugin extends Plugin {
 
-	private final int RANGED_GUILD_MINIGAME_TURN = 156;
-	private final int RANGED_GUILD_MINIGAME_SCORE = 157;
-
 	@Getter(AccessLevel.PACKAGE)
 	private int personalHighscore;
 
@@ -37,9 +34,6 @@ public class RangedGuildMinigamePlugin extends Plugin {
 
 	@Inject
 	private RangedGuildMinigameConfig config;
-
-	@Inject
-	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private Client client;
@@ -54,14 +48,12 @@ public class RangedGuildMinigamePlugin extends Plugin {
 	private RangedGuildMinigameOverlay overlay;
 
 	@Override
-	public void startUp() throws Exception {
-		personalHighscore = 0;
+	public void startUp() {
 		overlayManager.add(overlay);
 	}
 
 	@Override
-	public void shutDown() throws Exception {
-		personalHighscore = 0;
+	public void shutDown() {
 		overlayManager.remove(overlay);
 	}
 
@@ -77,14 +69,18 @@ public class RangedGuildMinigamePlugin extends Plugin {
 		var id = event.getVarpId();
 		var value = event.getValue();
 
+		final int RANGED_GUILD_MINIGAME_TURN = 156;
+		final int RANGED_GUILD_MINIGAME_SCORE = 157;
+
+
 		if (id == RANGED_GUILD_MINIGAME_TURN) {
-			turn = value > 10 ? 10 : value;
+			turn = Math.min(value, 10);
 
 			if (turn == 0 && config.isNotifyOnCompletion()) {
 				notifier.notify("Ranged minigame is complete.");
 			}
 		}
-		if (id == RANGED_GUILD_MINIGAME_SCORE) {
+		else if (id == RANGED_GUILD_MINIGAME_SCORE) {
 			currentScore = value;
 
 			if (value > personalHighscore)

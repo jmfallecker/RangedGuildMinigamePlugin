@@ -17,7 +17,7 @@ public class RangedGuildMinigameOverlay extends Overlay {
     @Inject
     private RangedGuildMinigameConfig config;
 
-    private PanelComponent panelComponent = new PanelComponent();
+    private final PanelComponent panelComponent = new PanelComponent();
 
     @Inject
     public RangedGuildMinigameOverlay(){
