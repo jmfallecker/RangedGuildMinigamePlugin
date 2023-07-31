@@ -29,6 +29,8 @@ public class RangedGuildMinigameOverlay extends Overlay {
     public Dimension render(Graphics2D graphics) {
         panelComponent.getChildren().clear();
 
+        if (!plugin.getCanPlayerShootOnCurrentTile()) return null;
+
         panelComponent.getChildren().add(
                 LineComponent.builder()
                         .left("Turn:")
